@@ -1,9 +1,12 @@
-绝对路径： cd /home/python/Downloads
+﻿绝对路径： cd /home/python/Downloads
 相对路径： cd Downloads
 
 .     表示 当前路径
 ..    表示 当前路径的上一层
 ../.. 表示 当前路径上一层的上一层
+
+
+##  linux命令————文件、磁盘管理
 
 ls --help: 查看帮助文档
 man ls: 查看手册 包括绝大部分命令、函数的使用说明
@@ -140,3 +143,140 @@ which: 查看命令文件
 	which ls 返回 /bin/ls 显示ls命令的路径 一般情况下 路径为/bin 或者/user/bin
 	
 
+
+##  linux命令————用户、权限管理
+
+linux 是多用户多任务的操作系统（Operation System)
+ifconfig： 查看ip地址
+
+ping:
+	ping 192.168.17.76 测试网络连接是否正常
+
+ssh： 远程登录
+	ssh python@192.168.17.76
+	ssh 用户名@ip
+
+whoami: 查看当前用户
+
+who: 查看登录用户信息
+	who -q 只显示用户的登录账号和登录用户的数量
+	who -u 显示列标题
+
+exit: 退出当前登录
+
+useradd: 添加用户账号
+	useradd fengyiwen -m -d /home/fengyiwen 报错：Permisson denied 无权限 在命令前加上sudo
+	sudo useradd fengyiwen -m -d /home/fengyiwen 提示输入密码 成功
+	-m	自动建立目录
+	-d	指定用户登录系统时的主目录
+
+passwd: 设定与修改密码
+	sudo passwd fengyiwen
+
+su: 切换用户
+	su fengyiwen 切换用户 提示输入密码 
+	su - fengyiwen 
+	su 普通用户	切换到普通用户 留在当前路径
+	su - 普通用户切换到普通用户，同时跳转到普通用户所在的家目录
+
+sudo: 当需要超级管理员权限时需要添加(报错：Permisson denied 无权限 )，且在命令行最前面，后面需要加空格
+	sudo -s  直接切换到root用户
+
+
+userdel: 删除用户
+	userdel abc(用户名)	删除abc用户，但不会自动删除用户的主目录（更常用，因为开发的信息可能会需要使用）
+	userdel -r abc(用户名)	删除用户，同时删除用户的主目录
+
+用户组： 在该用户组中的人有对应的权限
+查看用户组：
+	1. cat /etc/group
+	2. groupmod 再按三次tab键
+
+groupadd: 创建用户组 
+	groupadd 用户组名 如:groupadd lalala 
+
+groupdel: 删除用户组
+	groupdel 用户组名 如：groupdel lalala
+
+usermod: 修改或添加用户所在组
+	usermod -g 用户组 用户名： 修改用户所在默认组  usermod -g lalala fengyiwen
+	usermod -a -G 用户组 用户名： 添加用户所在组 
+
+为创建的普通用户添加sudo权限
+	sudo usermod -a -G adm 用户名
+	sudo usermod -a -G sudo 用户名
+
+groups: 查看用户在哪些组
+	groups fengyiwen 
+
+chmod: 更改文件权限
+	chmod 修改文件权限有两种使用格式：字母法与数字法
+	字母法：chmod u/g/o/a +/-/= rwx 文件
+			u	user 拥有者
+			g	group 用户组
+			o	other 表示其他以外的人
+			a	all 表示这三者皆是
+			+	增加权限
+			-	撤销权限
+			=	设定权限
+			r	read 表示可读取，对于一个目录，如果没有r权限，那么就意味着不能通过ls查看这个目录的内容。
+			w	write 表示可写入，对于一个目录，如果没有w权限，那么就意味着不能在目录下创建新的文件。
+			x	excute 表示可执行，对于一个目录，如果没有x权限，那么就意味着不能通过cd进入这个目录。
+			chmod g+w 1.txt 添加同组者人的权限 可以写入
+			chmod u=rw, g=r, o= 1.txt 拥有者可读可写 同组者可读 其他人没有任何权限
+
+	数字法：“rwx” 这些权限也可以用数字来代替 (更方便)
+			r	读取权限，数字代号为 "4"
+			w	写入权限，数字代号为 "2"
+			x	执行权限，数字代号为 "1"
+			-	不具任何权限，数字代号为 "0"
+			chmod 761 a.txt 拥有者rwx 同组者rw 其他人x
+
+	chmod 777 文件夹     ：只修改文件夹的权限 不修改文件里面内容的权限
+	chmod 777 文件夹 -R  ：会修改文件夹与文件夹里面所有内容的权限（递归修改）
+
+chown: 修改文件所有者
+	chown 用户名 文件名 如：chown fengyiwen 1.txt
+
+chgrp: 修改文件所属组	
+	chgrp 组名 文件名 如：chgrp lalala 2.txt
+
+
+
+##  linux命令————系统管理
+
+cal: cal命令用于查看当前日历，-y显示整年日历
+	cal 
+	cal -y
+
+date：显示或设置时间
+	date [MMDDhhmm[[CC]YY][.ss]] +format 
+	CC为年前两位yy为年的后两位，前两位的mm为月，后两位的mm为分钟，dd为天，hh为小时，ss为秒
+	如： date 010203042016.55
+	显示时间格式（date '+%y,%m,%d,%H,%M,%S'）	date '+%y-%m-%d' 2018-04-29
+	format格式	含义
+	%Y，%y	年
+	%m	月
+	%d	日
+	%H	时
+	%M	分
+	%S	秒
+
+ps: 查看进程信息 类似windows下的任务管理器
+	ps       :常用
+	ps -aux  :常用
+
+top: 动态显示运行中的进程
+	M	根据内存使用量来排序 (memory)
+	P	根据CPU占有率来排序
+	T	根据进程运行时间的长短来排序 (time)
+	U	可以根据后面输入的用户名来筛选进程 (user)
+	K	可以根据后面输入的PID来杀死进程。
+	q	退出
+	h	获得帮助
+
+kill： 终止进程 配合 ps 使用
+	kill pid
+	kill -9 pid
+	
+	
