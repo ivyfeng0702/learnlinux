@@ -149,7 +149,7 @@ which: 查看命令文件
 linux 是多用户多任务的操作系统（Operation System)
 ifconfig： 查看ip地址
 
-ping:
+ping: 测试远程主机连通性
 	ping 192.168.17.76 测试网络连接是否正常
 
 ssh： 远程登录
@@ -279,4 +279,54 @@ kill： 终止进程 配合 ps 使用
 	kill pid
 	kill -9 pid
 	
-	
+关机与重启
+	reboot	重新启动操作系统
+	shutdown –r now	重新启动操作系统，shutdown会给别的用户提示
+	shutdown -h now	立刻关机，其中now相当于时间为0的状态
+	shutdown -h 20:25	系统在今天的20:25 会关机
+	shutdown -h +10	系统再过十分钟后自动关机
+	init 0	关机
+	init 6	重启
+
+df： 命令用于检测文件系统的磁盘空间占用和空余情况，可以显示所有文件系统对节点和磁盘块的使用情况
+	-a	显示所有文件系统的磁盘使用情况
+	-m	以1024字节为单位显示
+
+ifconfig： 查看或配置网卡信息
+	sudo ifconfig ens33 down 把网卡关闭
+	sudo ifconfig ens33 up   把网卡开启
+	sudo ifconfig ens33 162.15.27.123 修改网卡
+
+
+sublime编辑器：
+ctrl + shift + d 复制并粘贴
+ctrl + l 选中整行
+
+vi编辑器：
+1. 命令模式
+2. 编辑模式： i 从命令跳转到编辑 插入在光标左边
+              I 从命令跳转到编辑 插入在光标行首
+              o 从命令跳转到编辑 插入在光标下一行
+              O 从命令跳转到编辑 插入在光标上一行
+              a 从命令跳转到编辑 插入在光标右边
+              A 从命令跳转到编辑 插入在光标行末
+3. 末行模式： :wq 保存并退出 等价于:x
+              :q! 不保存退出
+
+从命令到编辑 i/o/a/I/O/A
+从编辑到命令 esc
+
+
+vim编辑器：
+		ctrl + n: 自动补全
+		h: 左移 
+		j: 下移 
+		k: 上移 
+		l: 右移
+		M: 光标移动到中间行 
+		L: 光标移动到屏幕最后一行行首 
+		yy: 复制当前行, n yy 复制n行 
+		dd: 剪切当前行，n dd 剪切n行
+		p: 在光标所在位置向下新开辟一行,粘贴
+		u: 一步一步撤销 
+		Ctrl + r: 反撤销
